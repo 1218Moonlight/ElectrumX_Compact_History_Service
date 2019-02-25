@@ -1,0 +1,15 @@
+# /etc/systemd/system/<service name>.service
+
+[Unit]
+Description=electrumx compact service
+After=network.target
+
+[Service]
+Type=service
+User=root
+WorkingDirectory=<path>
+ExecStart=/usr/bin/python3 <path>main.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
