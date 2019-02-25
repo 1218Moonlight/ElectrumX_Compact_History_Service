@@ -1,3 +1,6 @@
+import subprocess
+
+
 class service:
     def __init__(self, journal):
         self.__j = journal
@@ -15,7 +18,7 @@ class service:
                "flush #178 took 0.0s.  Height 278,249 txs: 335,337",
                "flush #1,178 took 0.0s.  Height 278,249 txs: 335,337",
                "flush #65,535 took 0.0s.  Height 278,249 txs: 335,337",
-               "flush #60,010 took 0.0s.  Height 278,249 txs: 335,337"]
+               "flush #60,000 took 0.0s.  Height 278,249 txs: 335,337"]
         for v in msg:
             self.__filter(v)
 
@@ -33,6 +36,10 @@ class service:
     def __verification(self, msg):
         try:
             if int(msg) > 60000:
-                print("compact")
+                subprocess.call("systemctl stop electrumx.service &&"
+                                "python3.6 ./electrumx/compact_history.py &&"
+                                "systemctl start electrumx.service", shell=True)
+            else:
+                print("flush #" + msg)
         except:
-            print("Error Type", msg)
+            print("Error verification", msg)
