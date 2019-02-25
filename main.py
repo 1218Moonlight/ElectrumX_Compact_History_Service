@@ -1,13 +1,9 @@
 from systemd import journal
-
+from elecXjournal import manager
 
 def main():
-    j = journal.Reader()
-    j.this_boot()
-    j.log_level(journal.LOG_INFO)
-    j.add_match(_SYSTEMD_UNIT='electrumx.service')
-    for entry in j:
-        print(entry['MESSAGE'])
+    j = manager.service(journal=journal)
+    j.testWatch()
 
 
 if __name__ == '__main__':
